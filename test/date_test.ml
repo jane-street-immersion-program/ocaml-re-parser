@@ -28,17 +28,16 @@ let%expect_test "dates" =
   (res ()) |}]
 ;;
 
-let%expect_test "times" = 
-  let strings = 
-    [
-      "1997-07-16T19:20:30.45+01:00"
-      ;"2022-07-26 17:38:26.698101760Z"      ;"2022-07-26T17:38:26.698101760Z"
-
+let%expect_test "times" =
+  let strings =
+    [ "1997-07-16T19:20:30.45+01:00"
+    ; "2022-07-26 17:38:26.698101760Z"
+    ; "2022-07-26T17:38:26.698101760Z"
     ]
   in
-  List.iter strings ~f:(fun str -> 
-    let res = Parser.run Useful_parsers.time_parser str in
-    print_s [%message (res : Time_ns_unix.t option)]);
+  List.iter strings ~f:(fun str ->
+      let res = Parser.run Useful_parsers.time_parser str in
+      print_s [%message (res : Time_ns_unix.t option)]);
   [%expect
     {|
   (res ((1997-07-16 18:20:30.450000000Z)))

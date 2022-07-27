@@ -130,14 +130,6 @@ end = struct
       ; extract_value_from_captured_groups = get_first_char_of_group
       }
    ;;
-
-    (* let digit : 'a t = "\\d"
-    let space : 'a t = "\\s"
-    let upper :  'a t = "[A-Z]"
-    let lower : 'a t = "[a-z]"
-    let alpha : 'a t = "[a-zA-Z]"
-    let alnum 
-     *)
   end
 
   let string (s : string) : unit t =
@@ -170,32 +162,22 @@ end = struct
 
   let ignore_m : _ t -> unit t =
    fun t ->
-    { regex = t.regex
+    { regex = Re.no_group t.regex
     ; num_captures = t.num_captures
     ; extract_value_from_captured_groups = (fun _ _ -> Some ())
     }
  ;;
-
-  (* let capture : unit t -> string t =
-   fun t ->
-    { regex = Re.group t.regex
-    ; num_captures = t.num_captures + 1
-    ; extract_value_from_captured_groups = get_first_string_of_group
-    }
- ;; *)
 
   let and_capture (t : 'a t) : ('a * string) t =
     { regex = Re.group t.regex
     ; num_captures = t.num_captures + 1
     ; extract_value_from_captured_groups =
         (fun group offset ->
-          let the_thing_we_captured_ourselves : string option =
-            get_first_string_of_group group offset
-          in
-          let prev_parser_thing : 'a option =
+          let full_capture : string option = get_first_string_of_group group offset in
+          let previous_capture : 'a option =
             t.extract_value_from_captured_groups group (offset + 1)
           in
-          Option.both prev_parser_thing the_thing_we_captured_ourselves)
+          Option.both previous_capture full_capture)
     }
   ;;
 
@@ -235,7 +217,9 @@ end = struct
     let extract_value_from_captured_groups group offset =
       let rec find_the_match (group : Re.Group.t) (offset : int) (parsers : 'a t list) =
         match parsers with
-        | [] -> failwith "Re2.Parser.or_.to_result bug: called on non-match"
+        | [] ->
+          failwith
+            "Re.Parser.or_.extract_value_from_captured_groups bug: called on non-match"
         | t :: ts ->
           if Option.is_some (Re.Group.get_opt group offset)
           then t.extract_value_from_captured_groups group (offset + 1)
