@@ -1,0 +1,4 @@
+(executable
+ (public_name ocaml_re_parser)
+ (name main)
+ (libraries ocaml_re_parser))
