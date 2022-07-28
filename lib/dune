@@ -1,0 +1,5 @@
+(library
+ (name ocaml_re_parser)
+ (libraries core re core_unix.time_ns_unix)
+ (preprocess
+  (pps ppx_jane)))

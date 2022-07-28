@@ -1,0 +1,6 @@
+(library
+ (name ocaml_re_parser_test)
+ (inline_tests)
+ (libraries core ocaml_re_parser re2)
+ (preprocess
+  (pps ppx_jane)))
