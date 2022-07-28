@@ -163,7 +163,7 @@ end = struct
   let ignore_m : _ t -> unit t =
    fun t ->
     { regex = Re.no_group t.regex
-    ; num_captures = t.num_captures
+    ; num_captures = 0
     ; extract_value_from_captured_groups = (fun _ _ -> Some ())
     }
  ;;
