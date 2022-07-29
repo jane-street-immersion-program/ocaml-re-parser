@@ -1,0 +1,6 @@
+(executable
+ (name benchmark)
+ (public_name benchmark)
+ (libraries core re2 ocaml_re_parser)
+ (preprocess
+  (pps ppx_bench)))
